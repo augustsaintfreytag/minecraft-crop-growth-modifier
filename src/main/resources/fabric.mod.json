@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "crop_growth_modifier",
+  "version": "${version}",
+
+  "name": "Crop Growth Modifier",
+  "description": "Modify the growth rate of crops and trees with a configurable pace.",
+  "authors": [
+    "saint"
+  ],
+  "contact": {
+    "sources": "https://github.com/augustsaintfreytag/minecraft-crop-growth-modifier"
+  },
+
+  "license": "MIT",
+  "icon": "assets/crop_growth_modifier/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.saint.crop_growth_modifier.Mod"
+    ],
+    "client": [
+      "net.saint.crop_growth_modifier.ClientMod"
+    ],
+    "modmenu": [
+      "net.saint.crop_growth_modifier.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "crop_growth_modifier.mixin.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.21",
+    "fabric": "*",
+    "minecraft": ">=1.20",
+    "java": ">=17"
+  }
+}
