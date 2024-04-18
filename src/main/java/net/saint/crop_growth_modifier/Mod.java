@@ -18,7 +18,5 @@ public class Mod implements ModInitializer {
 	public void onInitialize() {
 		AutoConfig.register(ModConfig.class, JanksonConfigSerializer::new);
 		config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
-
-		// …
 	}
 }
