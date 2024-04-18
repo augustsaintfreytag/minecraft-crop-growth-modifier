@@ -1,6 +1,6 @@
 # Crop Growth Modifier
 
-A mod for Minecraft 1.20.1 to allow globally adjusting the rate of crop growth. Can be configured to either decelerate or accelerate the rate at which crops receive random ticks where they have a chance to grow.
+A mod for Minecraft 1.20.1 to allow globally adjusting the rate of crop growth. Can be configured to either decelerate or accelerate the rate at which crops receive random ticks where they have a chance to grow. Built for Fabric.
 
 ## Features
 
