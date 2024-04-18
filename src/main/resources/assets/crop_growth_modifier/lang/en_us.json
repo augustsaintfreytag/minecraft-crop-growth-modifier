@@ -1,0 +1,6 @@
+{
+	"text.autoconfig.crop_growth_modifier.title": "Crop Growth Modifier",
+	"text.autoconfig.crop_growth_modifier.option.cropTickChance": "Crop Tick Chance",
+	"text.autoconfig.crop_growth_modifier.option.cropExtraRollChance": "Crop Extra Roll Chance",
+	"text.autoconfig.crop_growth_modifier.option.cropExtraRollMax": "Crop Max Extra Rolls"
+}
