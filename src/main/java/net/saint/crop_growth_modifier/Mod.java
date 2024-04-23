@@ -1,12 +1,12 @@
 package net.saint.crop_growth_modifier;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.saint.crop_growth_modifier.config.ModConfig;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Mod implements ModInitializer {
 
