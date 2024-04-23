@@ -22,6 +22,10 @@ To additionally increase the stages a crop grows per successful event, you can i
 
 Consider configuring a limit on how many extra rolls can happen via max extra rolls (`cropExtraRollMax`). Setting the extra roll chance to `1.0` causes another tick to be scheduled for every single tick that occurs, so a limit is recommended to prevent infinite growth.
 
+### Reduced Bonemeal Growth
+
+To reduce the chance of using bonemeal growing a crop, you can reduce `cropGrowthChance`. A value of `1.0` (vanilla) means every time bonemeal is used, a random growth stage is applied to the block. This option can also be used to disable bonemeal crop growth entirely when set to `0.0`.
+
 ## License
 
 This mod was created by Saint for free use by the Minecraft community with basic attribution under the MIT license. This mod may be distributed with mod packs.
