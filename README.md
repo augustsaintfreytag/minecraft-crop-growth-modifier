@@ -4,15 +4,21 @@ A mod for Minecraft 1.20.1 to allow globally adjusting the rate of crop growth. 
 
 ## Features
 
-Crop blocks in Minecraft receive random ticks and internally roll on if the crop should grow into its next maturity state. This mod hooks into the `randomTick` method of `CropBlock` and rolls an additional time to determine if the tick should go through or be prevented. When set to a tick chance of `0.5`, only half of all random ticks sent to a crop block would go through and it should grow only half as quickly. Additionally, the mod supports scheduling extra rolls for the crop to allow for more than one chance to mature.
+Crop blocks in Minecraft receive random ticks and internally roll on if the crop should grow into its next maturity state. This mod hooks into the `randomTick` method of `CropBlock` and rolls an additional time to determine if the tick should go through or be prevented. When set to a tick chance of `0.5`, only half of all random ticks sent to a crop block would go through and it should grow only half as quickly.
 
-### Slower Growth
+The mod also allows separately configuring the growth stages applied to a crop block, e.g. with the use of bonemeal by a player or automation and changing the amount of growth stages applied whenever growth happens by any means. Additionally, the mod supports scheduling extra rolls for the crop to allow for more than one chance to mature.
+
+### Slower Natural Growth
 
 To slow down crop growth in your world, configure crop tick chance (`cropTickChance`) to a value below the default `1.0` (unaltered/vanilla growth speed). Setting it to `0.5` will let crops grow at roughly 50% the speed of vanilla, `0.25` at 25% the speed of vanilla, and so on.
 
-### Faster Growth
+To decrease the stages a crop grows per successful event, you can lower `cropGrowthAmountMin` from its vanilla value to `1` and `cropGrowthAmountMax` from to `4` or `3`. Changing these values is not required.
+
+### Faster Natural Growth
 
 To speed up crop growth, leave crop tick chance at its default `1.0` and increase the chance for extra rolls (`cropExtraRollChance`). Setting it to `0.5` means that half the times a crop might grow, it gets another chance to grow again, giving you a cumulative of 75%.
+
+To additionally increase the stages a crop grows per successful event, you can increase both `cropGrowthAmountMin` and `cropGrowthAmountMax` from their vanilla values, though total growth is limited by the maximum number of stages supported by a crop. Changing these values is not required.
 
 Consider configuring a limit on how many extra rolls can happen via max extra rolls (`cropExtraRollMax`). Setting the extra roll chance to `1.0` causes another tick to be scheduled for every single tick that occurs, so a limit is recommended to prevent infinite growth.
 

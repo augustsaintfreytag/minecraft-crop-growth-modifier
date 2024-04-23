@@ -1,6 +1,10 @@
 package net.saint.crop_growth_modifier.mixin;
 
+import static net.minecraft.util.math.MathHelper.clamp;
+
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -11,6 +15,7 @@ import net.minecraft.block.CropBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.World;
 import net.minecraft.world.tick.OrderedTick;
 import net.saint.crop_growth_modifier.Mod;
 
@@ -20,12 +25,11 @@ public abstract class CropBlockMixin {
 	private int scheduledExtraRolls = 0;
 
 	@Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo callbackInfo) {
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random,
+			CallbackInfo callbackInfo) {
 		CropBlock block = (CropBlock) (Object) this;
 
-		boolean didSucceedRoll = random.nextFloat() <= Mod.config.cropTickChance;
-
-		if (!didSucceedRoll) {
+		if (random.nextFloat() > Mod.config.cropTickChance) {
 			callbackInfo.cancel();
 		}
 
@@ -43,6 +47,24 @@ public abstract class CropBlockMixin {
 		} else {
 			scheduledExtraRolls = 0;
 		}
+	}
+
+	@Inject(method = "applyGrowth", at = @At("HEAD"), cancellable = true)
+	public void applyGrowth(World world, BlockPos pos, BlockState state, CallbackInfo callbackInfo) {
+		if (world.random.nextFloat() <= Mod.config.cropTickChance) {
+			callbackInfo.cancel();
+		}
+	}
+
+	@Shadow
+	public abstract int getMaxAge();
+
+	@Overwrite
+	protected int getGrowthAmount(World world) {
+		var growthMin = clamp(Mod.config.cropGrowthAmountMin, 1, getMaxAge());
+		var growthMax = clamp(Mod.config.cropGrowthAmountMax, growthMin + 1, getMaxAge() + 1);
+
+		return world.random.nextBetween(growthMin, growthMax);
 	}
 
 }
