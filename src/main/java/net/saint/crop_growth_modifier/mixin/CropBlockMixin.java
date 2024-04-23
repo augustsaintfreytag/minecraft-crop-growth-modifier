@@ -20,12 +20,11 @@ public abstract class CropBlockMixin {
 	private int scheduledExtraRolls = 0;
 
 	@Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo callbackInfo) {
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random,
+			CallbackInfo callbackInfo) {
 		CropBlock block = (CropBlock) (Object) this;
 
-		boolean didSucceedRoll = random.nextFloat() <= Mod.config.cropTickChance;
-
-		if (!didSucceedRoll) {
+		if (random.nextFloat() > Mod.config.cropTickChance) {
 			callbackInfo.cancel();
 		}
 
