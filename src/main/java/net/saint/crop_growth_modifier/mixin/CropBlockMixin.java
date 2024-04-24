@@ -61,8 +61,8 @@ public abstract class CropBlockMixin {
 
 	@Overwrite
 	protected int getGrowthAmount(World world) {
-		var growthMin = clamp(Mod.config.cropGrowthAmountMin, 1, getMaxAge());
-		var growthMax = clamp(Mod.config.cropGrowthAmountMax, growthMin + 1, getMaxAge() + 1);
+		var growthMin = clamp(Mod.config.cropGrowthStagesMin, 1, getMaxAge());
+		var growthMax = clamp(Mod.config.cropGrowthStagesMax, growthMin + 1, getMaxAge() + 1);
 
 		return world.random.nextBetween(growthMin, growthMax);
 	}
