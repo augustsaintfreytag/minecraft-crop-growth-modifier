@@ -12,11 +12,11 @@ public class ModConfig implements ConfigData {
 	@Comment("Chance for an applied growth event to succeed and actually make the crop grow (e.g. bonemeal) (percentage). Default: 0.5 (50%)")
 	public float cropGrowthChance = 0.5f;
 
-	@Comment("Minimum amount of growth stages to apply to a crop block when applied, default is vanilla. Default: 2")
-	public int cropGrowthAmountMin = 2;
+	@Comment("Minimum number of stages a crop block grows when growth happens, default is vanilla. Default: 2")
+	public int cropGrowthStagesMin = 2;
 
-	@Comment("Maximum amount of growth stages to apply to a crop block when applied, default is vanilla. Default: 5")
-	public int cropGrowthAmountMax = 5;
+	@Comment("Maximum number of stages a crop block grows when growth happens, default is vanilla. Default: 5")
+	public int cropGrowthStagesMax = 5;
 
 	@Comment("Chance for an extra crop tick roll to happen. Extra rolls also follow the crop tick chance. Accelerates crop growth. Default: 0 (0%)")
 	public float cropExtraRollChance = 0f;
