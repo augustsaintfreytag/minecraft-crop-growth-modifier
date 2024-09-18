@@ -8,6 +8,7 @@
 	"text.autoconfig.crop_growth_modifier.option.cropExtraRollMax": "Crop Max Extra Rolls",
 	"text.autoconfig.crop_growth_modifier.option.cowMilkProductionPerHundredTicks": "Cow Milk Production per 100 Ticks",
 	"text.autoconfig.crop_growth_modifier.option.cowMilkProductionCapacity": "Cow Milk Production Capacity",
+	"text.autoconfig.crop_growth_modifier.option.cowMilkInitialRandomFraction": "Cow Milk Random Fraction",
 	"text.crop_growth_modifier.cow_milk_capacity": "Stored Milk: %s bucket(s)",
 	"text.crop_growth_modifier.cow_milk_empty": "Out of Milk"
 }

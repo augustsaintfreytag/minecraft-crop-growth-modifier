@@ -6,9 +6,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.world.World;
 import net.saint.crop_growth_modifier.mixinlogic.AnimalEntityMixinLogic;
 
 @Mixin(AnimalEntity.class)
@@ -39,6 +41,18 @@ public abstract class AnimalEntityMixin implements AnimalEntityMixinLogic {
 		this.lastMilkProductionTime = lastMilkProductionTime;
 	}
 
+	// Init
+
+	@Inject(method = "<init>", at = @At("TAIL"))
+	public void AnimalEntity(EntityType<? extends AnimalEntity> entityType, World world, CallbackInfo callbackInfo) {
+		if (!((Object) this instanceof CowEntity)) {
+			return;
+		}
+
+		var cowEntity = (CowEntity) (Object) this;
+		setMilkAmount(getInitialRandomMilkAmount(cowEntity));
+	}
+
 	// NBT
 
 	@Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
@@ -47,7 +61,8 @@ public abstract class AnimalEntityMixin implements AnimalEntityMixinLogic {
 			return;
 		}
 
-		onWriteNbt(nbt);
+		var cowEntity = (CowEntity) (Object) this;
+		onWriteNbt(cowEntity, nbt);
 	}
 
 	@Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
@@ -56,7 +71,8 @@ public abstract class AnimalEntityMixin implements AnimalEntityMixinLogic {
 			return;
 		}
 
-		onReadNbt(nbt);
+		var cowEntity = (CowEntity) (Object) this;
+		onReadNbt(cowEntity, nbt);
 	}
 
 	// Logic
