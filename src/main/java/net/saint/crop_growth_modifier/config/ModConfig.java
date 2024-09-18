@@ -23,4 +23,10 @@ public class ModConfig implements ConfigData {
 
 	@Comment("Maximum number of extra rolls that can be scheduled for a crop block from a single tick. Used to prevent infinite ticks for high chances. Default: 20")
 	public int cropExtraRollMax = 20;
+
+	@Comment("Rate for cows to produce buckets of milk per 100 ticks (5 seconds). 1.0f = 1 bucket. Cows may hold more than one bucket. Formula for time calculation in minutes: (1 / <rate value> * (100/20)) / 60. Default: 0.00825 (approx. 10 minutes)")
+	public float cowMilkProductionPerHundredTicks = 0.00825f;
+
+	@Comment("Maximum amount of milk a cow can hold in buckets. Default: 2.0 buckets")
+	public float cowMilkProductionCapacity = 2.0f;
 }
