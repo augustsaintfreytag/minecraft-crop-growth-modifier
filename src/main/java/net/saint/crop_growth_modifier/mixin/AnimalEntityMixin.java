@@ -6,9 +6,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.World;
+import net.saint.crop_growth_modifier.Mod;
 import net.saint.crop_growth_modifier.mixinlogic.AnimalEntityMixinLogic;
 
 @Mixin(AnimalEntity.class)
@@ -37,6 +41,23 @@ public abstract class AnimalEntityMixin implements AnimalEntityMixinLogic {
 	@Unique
 	public void setLastMilkProductionTime(long lastMilkProductionTime) {
 		this.lastMilkProductionTime = lastMilkProductionTime;
+	}
+
+	// Init
+
+	@Inject(method = "<init>", at = @At("TAIL"))
+	public void AnimalEntity(EntityType<? extends AnimalEntity> entityType, World world, CallbackInfo callbackInfo) {
+		if (!((Object) this instanceof CowEntity)) {
+			return;
+		}
+
+		if (milkAmount == 0) {
+			var maxInitialMilkAmount = Mod.config.cowMilkProductionCapacity * Mod.config.cowMilkInitialRandomFraction;
+			var initialMilkAmount = (float) (Random.createLocal().nextBetween(0, (int) maxInitialMilkAmount * 1000)
+					/ 1000);
+
+			milkAmount = initialMilkAmount;
+		}
 	}
 
 	// NBT
