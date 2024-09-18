@@ -10,9 +10,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import net.saint.crop_growth_modifier.Mod;
 import net.saint.crop_growth_modifier.mixinlogic.AnimalEntityMixinLogic;
 
 @Mixin(AnimalEntity.class)
@@ -51,13 +49,8 @@ public abstract class AnimalEntityMixin implements AnimalEntityMixinLogic {
 			return;
 		}
 
-		if (milkAmount == 0) {
-			var maxInitialMilkAmount = Mod.config.cowMilkProductionCapacity * Mod.config.cowMilkInitialRandomFraction;
-			var initialMilkAmount = (float) (Random.createLocal().nextBetween(0, (int) maxInitialMilkAmount * 1000)
-					/ 1000);
-
-			milkAmount = initialMilkAmount;
-		}
+		var cowEntity = (CowEntity) (Object) this;
+		setMilkAmount(getInitialRandomMilkAmount(cowEntity));
 	}
 
 	// NBT
@@ -68,7 +61,8 @@ public abstract class AnimalEntityMixin implements AnimalEntityMixinLogic {
 			return;
 		}
 
-		onWriteNbt(nbt);
+		var cowEntity = (CowEntity) (Object) this;
+		onWriteNbt(cowEntity, nbt);
 	}
 
 	@Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
@@ -77,7 +71,8 @@ public abstract class AnimalEntityMixin implements AnimalEntityMixinLogic {
 			return;
 		}
 
-		onReadNbt(nbt);
+		var cowEntity = (CowEntity) (Object) this;
+		onReadNbt(cowEntity, nbt);
 	}
 
 	// Logic
