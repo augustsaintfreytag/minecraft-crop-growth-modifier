@@ -29,4 +29,7 @@ public class ModConfig implements ConfigData {
 
 	@Comment("Maximum amount of milk a cow can hold in buckets. Default: 2.0 buckets")
 	public float cowMilkProductionCapacity = 2.0f;
+
+	@Comment("Maximum amount of milk a cow can initially get randomly set to. Default: 0.5 (50%)")
+	public float cowMilkInitialRandomFraction = 0.5f;
 }
