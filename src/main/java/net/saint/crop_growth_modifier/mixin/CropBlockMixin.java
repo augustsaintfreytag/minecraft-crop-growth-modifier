@@ -1,11 +1,11 @@
 package net.saint.crop_growth_modifier.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CropBlock;
@@ -36,27 +36,29 @@ public abstract class CropBlockMixin implements CropBlockMixinLogic {
 	// Logic
 
 	@Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random,
+	private void injectedRandomTick(BlockState state, ServerWorld world, BlockPos position, Random random,
 			CallbackInfo callbackInfo) {
 		CropBlock block = (CropBlock) (Object) this;
-
-		var result = shouldAllowRandomTick(block, state, world, pos, random);
-
-		if (!result) {
+		if (!shouldAllowRandomTick(block, state, world, position, random)) {
 			callbackInfo.cancel();
+			return;
 		}
+
+		scheduleExtraRolls(block, state, world, position, random);
 	}
 
 	@Inject(method = "applyGrowth", at = @At("HEAD"), cancellable = true)
-	public void applyGrowth(World world, BlockPos pos, BlockState state, CallbackInfo callbackInfo) {
-		if (!shouldApplyGrowth(world, pos, state)) {
+	private void injectedApplyGrowth(World world, BlockPos position, BlockState state, CallbackInfo callbackInfo) {
+		if (!shouldApplyGrowth(world, position, state)) {
 			callbackInfo.cancel();
+			return;
 		}
 	}
 
-	@Overwrite
-	protected int getGrowthAmount(World world) {
-		return getGrowthAmountForAllowedEvent(world);
+	@Inject(method = "getGrowthAmount", at = @At("HEAD"), cancellable = true)
+	private void injectedGetGrowthAmount(World world, CallbackInfoReturnable<Integer> callbackInfo) {
+		var growthAmount = getGrowthAmountForAllowedEvent(world);
+		callbackInfo.setReturnValue(growthAmount);
 	}
 
 }
