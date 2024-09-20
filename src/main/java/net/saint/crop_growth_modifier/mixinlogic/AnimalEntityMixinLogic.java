@@ -4,7 +4,6 @@ import static net.minecraft.util.math.MathHelper.clamp;
 
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.random.Random;
 import net.saint.crop_growth_modifier.Mod;
 
 public interface AnimalEntityMixinLogic {
@@ -32,15 +31,6 @@ public interface AnimalEntityMixinLogic {
 			setMilkAmount(nbt.getFloat(NBT_KEY_MILK));
 		}
 	}
-
-	public default float getInitialRandomMilkAmount(CowEntity cowEntity) {
-		var maxInitialMilkAmount = Mod.config.cowMilkProductionCapacity * Mod.config.cowMilkInitialRandomFraction;
-		var initialMilkAmount = (float) (Random.createLocal().nextBetween(0, (int) maxInitialMilkAmount * 1000)
-				/ 1000);
-
-		return initialMilkAmount;
-	}
-
 	// Logic
 
 	public default void onMobTick(CowEntity cowEntity) {
