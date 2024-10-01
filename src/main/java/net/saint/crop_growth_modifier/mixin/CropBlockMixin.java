@@ -38,7 +38,7 @@ public abstract class CropBlockMixin implements CropBlockMixinLogic {
 	@Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
 	private void injectedRandomTick(BlockState state, ServerWorld world, BlockPos position, Random random,
 			CallbackInfo callbackInfo) {
-		CropBlock block = (CropBlock) (Object) this;
+		var block = (CropBlock) (Object) this;
 		if (!shouldAllowRandomTick(block, state, world, position, random)) {
 			callbackInfo.cancel();
 			return;

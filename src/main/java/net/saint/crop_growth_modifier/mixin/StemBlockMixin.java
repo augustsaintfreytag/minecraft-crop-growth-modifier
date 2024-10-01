@@ -9,7 +9,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.CropBlock;
 import net.minecraft.block.StemBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -41,7 +40,7 @@ public abstract class StemBlockMixin implements StemBlockMixinLogic {
 	@Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
 	private void injectedRandomTick(BlockState state, ServerWorld world, BlockPos position, Random random,
 			CallbackInfo callbackInfo) {
-		CropBlock block = (CropBlock) (Object) this;
+		var block = (StemBlock) (Object) this;
 		if (!shouldAllowRandomTick(block, state, world, position, random)) {
 			callbackInfo.cancel();
 			return;

@@ -4,7 +4,6 @@ import static net.minecraft.util.math.MathHelper.clamp;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.CropBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
@@ -18,18 +17,22 @@ public interface GrowableBlockMixinLogic {
 
 	public void setScheduledExtraRolls(int scheduledExtraRolls);
 
-	public int getMaxAge();
+	public default int getMaxAge() {
+		return 1;
+	}
 
-	public default boolean shouldAllowRandomTick(CropBlock block, BlockState state, ServerWorld world, BlockPos pos,
+	public default boolean shouldAllowRandomTick(Block block, BlockState state, ServerWorld world, BlockPos pos,
 			Random random) {
-		if (random.nextFloat() > Mod.config.cropTickChance) {
+		var randomValue = random.nextFloat();
+
+		if (randomValue > Mod.config.cropTickChance) {
 			return false;
 		}
 
 		return true;
 	}
 
-	public default void scheduleExtraRolls(CropBlock block, BlockState state, ServerWorld world, BlockPos pos,
+	public default void scheduleExtraRolls(Block block, BlockState state, ServerWorld world, BlockPos pos,
 			Random random) {
 		if (random.nextFloat() <= Mod.config.cropExtraRollChance) {
 			var scheduledExtraRolls = getScheduledExtraRolls();
