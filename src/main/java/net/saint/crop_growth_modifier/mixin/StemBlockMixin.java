@@ -1,22 +1,22 @@
 package net.saint.crop_growth_modifier.mixin;
 
+import static net.minecraft.util.math.MathHelper.clamp;
+
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.CropBlock;
+import net.minecraft.block.StemBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.World;
-import net.saint.crop_growth_modifier.mixinlogic.CropBlockMixinLogic;
+import net.saint.crop_growth_modifier.mixinlogic.StemBlockMixinLogic;
 
-@Mixin(CropBlock.class)
-public abstract class CropBlockMixin implements CropBlockMixinLogic {
+@Mixin(StemBlock.class)
+public abstract class StemBlockMixin implements StemBlockMixinLogic {
 
 	// Properties
 
@@ -30,15 +30,17 @@ public abstract class CropBlockMixin implements CropBlockMixinLogic {
 		this.scheduledExtraRolls = scheduledExtraRolls;
 	}
 
-	@Shadow
-	public abstract int getMaxAge();
+	@Unique
+	public int getMaxAge() {
+		return StemBlock.MAX_AGE;
+	}
 
 	// Logic
 
 	@Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
 	private void injectedRandomTick(BlockState state, ServerWorld world, BlockPos position, Random random,
 			CallbackInfo callbackInfo) {
-		var block = (CropBlock) (Object) this;
+		var block = (StemBlock) (Object) this;
 		if (!shouldAllowRandomTick(block, state, world, position, random)) {
 			callbackInfo.cancel();
 			return;
@@ -47,18 +49,23 @@ public abstract class CropBlockMixin implements CropBlockMixinLogic {
 		scheduleExtraRolls(block, state, world, position, random);
 	}
 
-	@Inject(method = "applyGrowth", at = @At("HEAD"), cancellable = true)
-	private void injectedApplyGrowth(World world, BlockPos position, BlockState state, CallbackInfo callbackInfo) {
+	@Inject(method = "grow", at = @At("HEAD"), cancellable = true)
+	private void grow(ServerWorld world, Random random, BlockPos position, BlockState state,
+			CallbackInfo callbackInfo) {
 		if (!shouldApplyGrowth(world, position, state)) {
 			callbackInfo.cancel();
 			return;
 		}
-	}
 
-	@Inject(method = "getGrowthAmount", at = @At("HEAD"), cancellable = true)
-	private void injectedGetGrowthAmount(World world, CallbackInfoReturnable<Integer> callbackInfo) {
 		var growthAmount = getGrowthAmountForAllowedEvent(world);
-		callbackInfo.setReturnValue(growthAmount);
+		var updatedAge = clamp(state.get(StemBlock.AGE) + growthAmount, 0, getMaxAge());
+		var updatedState = state.with(StemBlock.AGE, updatedAge);
+
+		world.setBlockState(position, updatedState, 2);
+
+		if (updatedAge == getMaxAge()) {
+			state.randomTick(world, position, random);
+		}
 	}
 
 }
