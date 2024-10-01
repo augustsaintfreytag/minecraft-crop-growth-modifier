@@ -22,18 +22,30 @@ public interface AnimalEntityMixinLogic {
 
 	// NBT
 
-	public default void onWriteNbt(CowEntity cowEntity, NbtCompound nbt) {
+	public default void writeNbt(CowEntity cowEntity, NbtCompound nbt) {
+		if (!Mod.config.cowLimitedMilkProduction) {
+			return;
+		}
+
 		nbt.putFloat(NBT_KEY_MILK, this.getMilkAmount());
 	}
 
-	public default void onReadNbt(CowEntity cowEntity, NbtCompound nbt) {
+	public default void readNbt(CowEntity cowEntity, NbtCompound nbt) {
+		if (!Mod.config.cowLimitedMilkProduction) {
+			return;
+		}
+
 		if (nbt.contains(NBT_KEY_MILK)) {
 			setMilkAmount(nbt.getFloat(NBT_KEY_MILK));
 		}
 	}
 	// Logic
 
-	public default void onMobTick(CowEntity cowEntity) {
+	public default void mobTick(CowEntity cowEntity) {
+		if (!Mod.config.cowLimitedMilkProduction) {
+			return;
+		}
+
 		var time = cowEntity.getWorld().getTime();
 
 		if (time - getLastMilkProductionTime() < 100) {

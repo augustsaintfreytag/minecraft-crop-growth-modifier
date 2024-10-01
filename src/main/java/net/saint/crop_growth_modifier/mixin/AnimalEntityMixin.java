@@ -42,35 +42,35 @@ public abstract class AnimalEntityMixin implements AnimalEntityMixinLogic {
 	// NBT
 
 	@Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
-	public void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo callbackInfo) {
+	public void injectedWriteCustomDataToNbt(NbtCompound nbt, CallbackInfo callbackInfo) {
 		if (!((Object) this instanceof CowEntity)) {
 			return;
 		}
 
 		var cowEntity = (CowEntity) (Object) this;
-		onWriteNbt(cowEntity, nbt);
+		writeNbt(cowEntity, nbt);
 	}
 
 	@Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
-	public void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo callbackInfo) {
+	public void injectedReadCustomDataFromNbt(NbtCompound nbt, CallbackInfo callbackInfo) {
 		if (!((Object) this instanceof CowEntity)) {
 			return;
 		}
 
 		var cowEntity = (CowEntity) (Object) this;
-		onReadNbt(cowEntity, nbt);
+		readNbt(cowEntity, nbt);
 	}
 
 	// Logic
 
 	@Inject(method = "mobTick", at = @At("TAIL"))
-	protected void mobTick(CallbackInfo callbackInfo) {
+	protected void injectedMobTick(CallbackInfo callbackInfo) {
 		if (!((Object) this instanceof CowEntity)) {
 			return;
 		}
 
 		var cowEntity = (CowEntity) (Object) this;
-		onMobTick(cowEntity);
+		mobTick(cowEntity);
 	}
 
 }

@@ -19,6 +19,10 @@ public interface CowEntityMixinLogic {
 	// Logic
 
 	public default boolean onInteractMob(CowEntity cowEntity, PlayerEntity player, Hand hand) {
+		if (!Mod.config.cowLimitedMilkProduction) {
+			return false;
+		}
+
 		var world = player.getWorld();
 		var itemStack = player.getStackInHand(hand);
 
@@ -34,7 +38,7 @@ public interface CowEntityMixinLogic {
 				player.sendMessage(milkMessage, true);
 			}
 
-			return false;
+			return true;
 		}
 
 		if (!itemStack.isOf(Items.BUCKET)) {
@@ -49,17 +53,16 @@ public interface CowEntityMixinLogic {
 				player.sendMessage(milkMessage, true);
 			}
 
-			return false;
+			return true;
 		}
 
 		setMilkAmount(milkProductionAmount - 1.0f);
-		return true;
+		return false;
 	}
 
 	public default float getInitialRandomMilkAmount(Random random, CowEntity cowEntity) {
-		var maxInitialMilkAmount = Mod.config.cowMilkProductionCapacity * Mod.config.cowMilkInitialRandomFraction;
-		var initialMilkAmount = (float) (random.nextBetween(0, (int) maxInitialMilkAmount * 1000)
-				/ 1000);
+		float maxInitialMilkAmount = Mod.config.cowMilkProductionCapacity * Mod.config.cowMilkInitialRandomFraction;
+		float initialMilkAmount = random.nextFloat() * maxInitialMilkAmount;
 
 		return initialMilkAmount;
 	}

@@ -22,7 +22,9 @@ public abstract class CowEntityMixin implements CowEntityMixinLogic {
 	@Inject(method = "<init>", at = @At("TAIL"))
 	public void AnimalEntity(EntityType<? extends CowEntity> entityType, World world, CallbackInfo callbackInfo) {
 		var cowEntity = (CowEntity) (Object) this;
-		setMilkAmount(getInitialRandomMilkAmount(world.random, cowEntity));
+		var initialMilkAmount = getInitialRandomMilkAmount(world.random, cowEntity);
+
+		setMilkAmount(initialMilkAmount);
 	}
 
 	// Logic
@@ -30,11 +32,10 @@ public abstract class CowEntityMixin implements CowEntityMixinLogic {
 	@Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
 	public void interactMob(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> callbackInfo) {
 		var cowEntity = (CowEntity) (Object) this;
-		var result = onInteractMob(cowEntity, player, hand);
+		var wantsEventCancel = onInteractMob(cowEntity, player, hand);
 
-		if (!result) {
-			callbackInfo.setReturnValue(ActionResult.FAIL);
-			callbackInfo.cancel();
+		if (wantsEventCancel) {
+			callbackInfo.setReturnValue(ActionResult.CONSUME);
 			return;
 		}
 	}
