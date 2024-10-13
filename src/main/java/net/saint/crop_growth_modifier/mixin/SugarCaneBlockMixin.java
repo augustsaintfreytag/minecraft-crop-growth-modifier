@@ -1,5 +1,6 @@
+package net.saint.crop_growth_modifier.mixin;
+
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -25,9 +26,6 @@ public abstract class SugarCaneBlockMixin implements SugarCaneBlockMixinLogic {
 	public void setScheduledExtraRolls(int scheduledExtraRolls) {
 		this.scheduledExtraRolls = scheduledExtraRolls;
 	}
-
-	@Shadow
-	public abstract int getMaxAge();
 
 	// Logic
 
