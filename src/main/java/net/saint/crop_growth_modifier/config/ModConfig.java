@@ -27,6 +27,12 @@ public class ModConfig implements ConfigData {
 	@Comment("Maximum number of extra rolls that can be scheduled for a crop block from a single tick. Used to prevent infinite ticks for high chances. Default: 20")
 	public int cropExtraRollMax = 20;
 
+	@Comment("Cooldown for animal breeding (vanilla default: 6k ticks = 5 minutes). Default: 6000")
+	public int animalBreedingCooldown = 36000;
+
+	@Comment("Rolled extra multiplier for applied cooldown for animal breeding (1.0 = x1, 2.0 = between 1x and 2x is applied, lower base cooldown for wider range). Default: 0")
+	public float animalBreedingCooldownMultiplier = 1f;
+
 	@Comment("Enable limited milk production for cows. Default: false")
 	public boolean cowLimitedMilkProduction = false;
 
