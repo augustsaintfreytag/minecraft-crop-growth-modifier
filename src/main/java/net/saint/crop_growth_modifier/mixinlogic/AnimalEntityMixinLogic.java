@@ -2,8 +2,12 @@ package net.saint.crop_growth_modifier.mixinlogic;
 
 import static net.minecraft.util.math.MathHelper.clamp;
 
+import blue.endless.jankson.annotation.Nullable;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.CowEntity;
+import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.world.ServerWorld;
 import net.saint.crop_growth_modifier.Mod;
 
 public interface AnimalEntityMixinLogic {
@@ -40,6 +44,20 @@ public interface AnimalEntityMixinLogic {
 		}
 	}
 	// Logic
+
+	public default void breedWithBaby(ServerWorld world, AnimalEntity other, @Nullable PassiveEntity baby) {
+		var animalEntity = (AnimalEntity) (Object) this;
+		var random = world.getRandom();
+
+		var baseAnimalMultiplifer = 1 + random.nextFloat() * Mod.config.animalBreedingCooldownMultiplier;
+		var baseAnimalCooldown = (int) (Mod.config.animalBreedingCooldown * baseAnimalMultiplifer);
+
+		var otherAnimalMultiplifer = 1 + random.nextFloat() * Mod.config.animalBreedingCooldownMultiplier;
+		var otherAnimalCooldown = (int) (Mod.config.animalBreedingCooldown * otherAnimalMultiplifer);
+
+		animalEntity.setBreedingAge(baseAnimalCooldown);
+		other.setBreedingAge(otherAnimalCooldown);
+	}
 
 	public default void mobTick(CowEntity cowEntity) {
 		if (!Mod.config.cowLimitedMilkProduction) {
