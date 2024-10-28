@@ -12,7 +12,7 @@ public class ModConfig implements ConfigData {
 	@Comment("Chance for an applied growth event to succeed and actually make the crop grow (e.g. bonemeal) (percentage). Default: 1.0 (100%)")
 	public float cropGrowthChance = 1.0f;
 
-	@Comment("Multiplier for the growth speed of stem-based blocks (e.g. pumpkins, melons) (0.5 = stem blocks grow half the speed of crops). Default: 1.0 (1x)")
+	@Comment("Multiplier for the growth speed of stem-based blocks (e.g. pumpkins, melons) (0.5 = stem blocks grow half the speed of crops). Don't set higher than 1.0. Default: 1.0 (1x)")
 	public float stemBlockMultiplier = 1.0f;
 
 	@Comment("Minimum number of stages a crop block grows when growth happens, default is vanilla. Default: 2")
