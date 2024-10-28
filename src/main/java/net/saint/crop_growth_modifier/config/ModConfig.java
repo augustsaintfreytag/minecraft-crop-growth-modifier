@@ -7,10 +7,10 @@ import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 @Config(name = "crop_growth_modifier")
 public class ModConfig implements ConfigData {
 	@Comment("Chance for a random world tick to be forwarded to a crop block (percentage). Default: 1.0 (100%)")
-	public float cropTickChance = 0.75f;
+	public float cropTickChance = 1.0f;
 
-	@Comment("Chance for an applied growth event to succeed and actually make the crop grow (e.g. bonemeal) (percentage). Default: 0.5 (50%)")
-	public float cropGrowthChance = 0.5f;
+	@Comment("Chance for an applied growth event to succeed and actually make the crop grow (e.g. bonemeal) (percentage). Default: 1.0 (100%)")
+	public float cropGrowthChance = 1.0f;
 
 	@Comment("Minimum number of stages a crop block grows when growth happens, default is vanilla. Default: 2")
 	public int cropGrowthStagesMin = 2;
