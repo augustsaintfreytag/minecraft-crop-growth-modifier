@@ -6,9 +6,16 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import blue.endless.jankson.annotation.Nullable;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.CowEntity;
+import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Hand;
+import net.saint.crop_growth_modifier.Mod;
 import net.saint.crop_growth_modifier.mixinlogic.AnimalEntityMixinLogic;
 
 @Mixin(AnimalEntity.class)
@@ -64,13 +71,30 @@ public abstract class AnimalEntityMixin implements AnimalEntityMixinLogic {
 	// Logic
 
 	@Inject(method = "mobTick", at = @At("TAIL"))
-	protected void injectedMobTick(CallbackInfo callbackInfo) {
+	private void injectedMobTick(CallbackInfo callbackInfo) {
 		if (!((Object) this instanceof CowEntity)) {
 			return;
 		}
 
 		var cowEntity = (CowEntity) (Object) this;
 		mobTick(cowEntity);
+	}
+
+
+	@Inject(method = "breed", at = @At("TAIL"))
+	private void injectedBreedWithBaby(ServerWorld world, AnimalEntity other, @Nullable PassiveEntity baby,
+			CallbackInfo callbackInfo) {
+		var animalEntity = (AnimalEntity) (Object) this;
+		var random = world.getRandom();
+
+		var baseAnimalMultiplifer = 1 + random.nextFloat() * Mod.config.animalBreedingCooldownMultiplier;
+		var baseAnimalCooldown = (int) (Mod.config.animalBreedingCooldown * baseAnimalMultiplifer);
+
+		var otherAnimalMultiplifer = 1 + random.nextFloat() * Mod.config.animalBreedingCooldownMultiplier;
+		var otherAnimalCooldown = (int) (Mod.config.animalBreedingCooldown * otherAnimalMultiplifer);
+
+		animalEntity.setBreedingAge(baseAnimalCooldown);
+		other.setBreedingAge(otherAnimalCooldown);
 	}
 
 }
