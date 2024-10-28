@@ -2,6 +2,7 @@
 	"text.autoconfig.crop_growth_modifier.title": "Crop Growth Modifier",
 	"text.autoconfig.crop_growth_modifier.option.cropTickChance": "Crop Tick Chance",
 	"text.autoconfig.crop_growth_modifier.option.cropGrowthChance": "Crop Growth Chance",
+	"text.autoconfig.crop_growth_modifier.option.stemBlockMultiplier": "Stem Block Multiplier",
 	"text.autoconfig.crop_growth_modifier.option.cropGrowthStagesMin": "Crop Growth Amount Min",
 	"text.autoconfig.crop_growth_modifier.option.cropGrowthStagesMax": "Crop Growth Amount Max",
 	"text.autoconfig.crop_growth_modifier.option.cropExtraRollChance": "Crop Extra Roll Chance",
