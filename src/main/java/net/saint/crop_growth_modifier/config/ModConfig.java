@@ -12,14 +12,14 @@ public class ModConfig implements ConfigData {
 	@Comment("Chance for an applied growth event to succeed and actually make the crop grow (e.g. bonemeal) (percentage). Default: 1.0 (100%)")
 	public float cropGrowthChance = 1.0f;
 
-	@Comment("Multiplier for the growth speed of stem-based blocks (e.g. pumpkins, melons) (0.5 = stem blocks grow half the speed of crops). Don't set higher than 1.0. Default: 1.0 (1x)")
-	public float stemBlockMultiplier = 1.0f;
-
 	@Comment("Minimum number of stages a crop block grows when growth happens, default is vanilla. Default: 2")
 	public int cropGrowthStagesMin = 2;
 
 	@Comment("Maximum number of stages a crop block grows when growth happens, default is vanilla. Default: 5")
 	public int cropGrowthStagesMax = 5;
+
+	@Comment("Multiplier for the growth speed of stem-based blocks (e.g. pumpkins, melons) (0.5 = stem blocks grow half the speed of crops). Don't set higher than 1.0. Default: 1.0 (1x)")
+	public float stemBlockMultiplier = 1.0f;
 
 	@Comment("Chance for an extra crop tick roll to happen. Extra rolls also follow the crop tick chance. Accelerates crop growth. Default: 0 (0%)")
 	public float cropExtraRollChance = 0f;
@@ -28,7 +28,7 @@ public class ModConfig implements ConfigData {
 	public int cropExtraRollMax = 20;
 
 	@Comment("Cooldown for animal breeding (vanilla default: 6k ticks = 5 minutes). Default: 6000")
-	public int animalBreedingCooldown = 36000;
+	public int animalBreedingCooldown = 6000;
 
 	@Comment("Rolled extra multiplier for applied cooldown for animal breeding (1.0 = x1, 2.0 = between 1x and 2x is applied, lower base cooldown for wider range). Default: 0")
 	public float animalBreedingCooldownMultiplier = 1f;
